@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "removeComments": true,
+        "outDir": "build/",
+        "rootDir": "src/",
+        "allowJs": false,
+        "declaration": true,
+        "typeRoots": [
+            "./node_modules/@types"
+        ]
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

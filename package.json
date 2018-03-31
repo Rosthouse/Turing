@@ -1,20 +1,28 @@
 {
-  "name": "turing_machine",
-  "version": "0.1",
+  "name": "turing",
+  "version": "1.0.0",
   "description": "A simple implementation of a turing machine",
-  "main": "main",
-  "author": "Rosthouse",
-  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/Rosthouse/Turing.git"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "@types/mocha": "^2.2.46",
-    "@types/node": "7.0.38",
-    "mocha": "^4.1.0",
-    "ts-mockito": "^2.2.7",
-    "typescript": "^2.6.2",
+  "keywords": [
+    "turing",
+    "machine",
+    "theoretical",
+    "computation"
+  ],
+  "author": "Rosthouse",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rosthouse/Turing/issues"
+  },
+  "homepage": "https://github.com/Rosthouse/Turing#readme",
+  "dependencies": {
+    "fs-extra": "^5.0.0"
   }
 }
