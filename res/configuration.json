@@ -34,7 +34,7 @@
             ]
         },
         {
-            "name": "s6",
+            "name": "s5",
             "actions": [
                 { "read": "1", "write": "1", "next": "s5", "move": "L" },
                 { "read": "0", "write": "1", "next": "s1", "move": "R" }
