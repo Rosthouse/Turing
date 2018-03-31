@@ -1,0 +1,45 @@
+{
+    "sigma": ["1"],
+    "blank": "0",
+    "start": "s1",
+    "accepting": [ "s6" ],
+    "rejecting": [],
+    "states": [
+        {
+            "name": "s1",
+            "actions": [
+                { "read": "1", "write": "0", "next": "s2", "move": "R" },
+                { "read": "0", "write": "0", "next": "s6", "move": "N" }
+            ]
+        },
+        {
+            "name": "s2",
+            "actions": [
+                { "read": "1", "write": "1", "next": "s2", "move": "R" },
+                { "read": "0", "write": "0", "next": "s3", "move": "R" }
+            ]
+        },
+        {
+            "name": "s3",
+            "actions": [
+                { "read": "1", "write": "0", "next": "s3", "move": "R" },
+                { "read": "0", "write": "1", "next": "s4", "move": "L" }
+            ]
+        },
+        {
+            "name": "s4",
+            "actions": [
+                { "read": "1", "write": "1", "next": "s4", "move": "L" },
+                { "read": "0", "write": "0", "next": "s5", "move": "L" }
+            ]
+        },
+        {
+            "name": "s6",
+            "actions": [
+                { "read": "1", "write": "1", "next": "s5", "move": "L" },
+                { "read": "0", "write": "1", "next": "s1", "move": "R" }
+            ]
+        }
+        
+    ]
+}
