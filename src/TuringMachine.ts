@@ -1,22 +1,22 @@
 import * as fs from "fs-extra";
 
 import { Configuration, State, MOVEMENT } from "./Configuration";
+import { Tape } from "./Tape";
 
 export class TuringMachine {
 
     config: Configuration;
-    tape: string[];
-    position: number;
+    tape: Tape;
     state: State;
 
     constructor(config: Configuration) {
         this.config = config;
-        this.tape = [];
-        this.position = 0;
+        this.tape = new Tape(config.blank);
         this.state = config.start;
     }
 
     startWord(word: string) {
+        this.tape.init(word);
         for (let i = 0; i < word.length; i++) {
             let char = word.charAt(i);
             if (this.config.sigma.filter((elem) => elem === char).length > 0 || char === this.config.blank) {
@@ -31,9 +31,7 @@ export class TuringMachine {
         console.log("Starting turing machine with word " + this.tape);
         this.state = this.config.start;
         do {
-            // console.log(`Executing state ${this.state.name} at position ${this.position}`);
             let nextState: any = this.executeState(this.state);
-            // console.log(`Next state: ${nextState}, new position: ${this.position}`);
             this.state = this.config.getStateByName(nextState);
         } while (this.state != undefined)
 
@@ -48,43 +46,24 @@ export class TuringMachine {
     }
 
     executeState(state: State): State {
-        let symbol = this.readTape(this.position);
-        if (symbol === undefined) {
-            return undefined;
-        }
-        // console.log(`Read symbol ${symbol}`);
+        let symbol = this.tape.read();
         let action = state.getActionForSymbol(symbol);
-        // console.log(`Executing action ${action}`);
-        this.tape[this.position] = action.write;
+        this.tape.write(action.write);
         let movementString: string;
         switch (action.move) {
             case MOVEMENT.LEFT:
-                this.position -= 1;
+                this.tape.moveLeft();
                 movementString = "left";
                 break;
             case MOVEMENT.NONE:
-                this.position = this.position;
                 movementString = "nowhere";
                 break;
             case MOVEMENT.RIGHT:
-                this.position += 1;
+                this.tape.moveRight();
                 movementString = "right";
                 break;
         }
         console.log(`State ${state.name}: Read symbol ${symbol}, writing symbol ${action.write}, moving ${movementString}, position ${this.position} next state: ${action.next.name}`);
         return action.next;
     }
-
-    readTape(position: number) {
-        if (position < 0) {
-            return undefined;
-        }
-        let symbol = this.tape[this.position];
-        if (symbol === undefined) {
-            this.tape[this.position] = this.config.blank;
-            symbol = this.config.blank;
-        }
-        return symbol;
-    }
-
 }
