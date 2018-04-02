@@ -17,37 +17,33 @@ export class TuringMachine {
 
     startWord(word: string) {
         this.tape.init(word);
-        for (let i = 0; i < word.length; i++) {
-            let char = word.charAt(i);
-            if (this.config.sigma.filter((elem) => elem === char).length > 0 || char === this.config.blank) {
-                this.tape[i] = word.charAt(i);
-            } else {
-                throw new Error(`Character '${char} is not in the alphabet ${this.config.sigma}`);
-            }
-        }
     }
 
     run() {
-        console.log("Starting turing machine with word " + this.tape);
+        console.log(`Starting turing machine with word "${this.tape.toString()}"`);
         this.state = this.config.start;
         do {
-            let nextState: any = this.executeState(this.state);
+            let nextState: any = this.executeState(this.state); // Is a string
             this.state = this.config.getStateByName(nextState);
-        } while (this.state != undefined)
+        } while (this.state != undefined && this.state.hasActions())
 
-        console.log("Finished turing machine with word " + this.tape);
-        if (this.state === undefined) {
-            console.log("Failed");
-        } else if (this.config.accepting.filter((state) => state.name === this.state.name).length > 0) {
-            console.log("This was a success");
+        console.log(`Starting turing machine with word "${this.tape.toString()}"`);
+        if (this.config.accept(this.state)) {
+            console.log("Word was accepted");
+        } else if (this.config.reject(this.state)) {
+            console.log("Word was rejected");
         } else {
-            console.log("failed");
+            console.log("Undefined state. Something went terribly wrong");
         }
     }
 
     executeState(state: State): State {
-        let symbol = this.tape.read();
-        let action = state.getActionForSymbol(symbol);
+        const symbol = this.tape.read();
+        const action = state.getActionForSymbol(symbol);
+        if (action === undefined) {
+            console.log("No action found, stopping machinge");
+            return undefined;
+        }
         this.tape.write(action.write);
         let movementString: string;
         switch (action.move) {
@@ -63,7 +59,7 @@ export class TuringMachine {
                 movementString = "right";
                 break;
         }
-        console.log(`State ${state.name}: Read symbol ${symbol}, writing symbol ${action.write}, moving ${movementString}, position ${this.position} next state: ${action.next.name}`);
+        console.log(`State ${state.name}: Read symbol ${symbol}, writing symbol ${action.write}, moving ${movementString}, next state: ${action.next}`);
         return action.next;
     }
 }

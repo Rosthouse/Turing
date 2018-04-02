@@ -19,6 +19,28 @@ export class Configuration {
         return state;
     }
 
+    accept(stateToAccept: State) {
+        if (stateToAccept) {
+            if (this.accepting.filter((state) => state.name === stateToAccept.name).length > 0) {
+                return true;
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    reject(stateToReject: State) {
+        if (stateToReject) {
+            if (this.rejecting.filter((state) => state.name === stateToReject.name).length > 0) {
+                return true;
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
+
     static readConfiguration(path: string): Configuration {
         return this.parseConfiguration(fs.readFileSync(path).toString());
     }
@@ -83,6 +105,10 @@ export class State {
     getActionForSymbol(symbol: string): Action {
         let action = this.actions.filter((action) => action.read === symbol)[0];
         return action;
+    }
+
+    hasActions(): boolean {
+        return this.actions.length > 0;
     }
 }
 

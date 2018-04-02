@@ -14,6 +14,15 @@ export class Tape {
             let symbol = word.charAt(i);
             this.position = this.insertCell(symbol, this.position, undefined);
         }
+        this.position = this.findLeftEnd(this.position);
+    }
+
+    private findLeftEnd(cell: Cell): Cell {
+        let currentCell = cell;
+        while (currentCell.left !== undefined) {
+            currentCell = currentCell.left;
+        }
+        return currentCell;
     }
 
     private insertCell(symbol: string, left: Cell, right: Cell): Cell {
@@ -49,6 +58,16 @@ export class Tape {
         } else {
             this.position = this.position.right;
         }
+    }
+
+    public toString(): string {
+        let currentCell = this.findLeftEnd(this.position);
+        let printOut = "";
+        do {
+            printOut += currentCell.value;
+            currentCell = currentCell.right;
+        } while (currentCell != undefined);
+        return printOut;
     }
 }
 

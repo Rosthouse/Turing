@@ -1,0 +1,70 @@
+{
+    "sigma": ["0", "1", "#"],
+    "blank": "_",
+    "start": "s1",
+    "accepting": [ "sAcc" ],
+    "rejecting": ["sRej"],
+    "states": [
+        {
+            "name": "s1",
+            "actions": [
+                { "read": "1", "write": "1", "next": "s1", "move": "R" },
+                { "read": "0", "write": "0", "next": "s1", "move": "R" },
+                { "read": "_", "write": "_", "next": "s1", "move": "R" },
+                { "read": "#", "write": "#", "next": "s2", "move": "R" }
+            ]
+        },
+        {
+            
+            "Description": "Traveling right for the first symbol",
+            "name": "s2",
+            "actions": [
+                { "read": "0", "write": "#", "next": "s3", "move": "L" },
+                { "read": "1", "write": "#", "next": "s4", "move": "L" },
+                { "read": "#", "write": "#", "next": "s2", "move": "R" },
+                { "read": "_", "write": "_", "next": "sRej", "move": "R" }
+            ]
+        },
+        {
+            "Description": "Looking for a 0 while going left",
+            "name": "s3",
+            "actions": [
+                { "read": "0", "write": "#", "next": "s5", "move": "R" },
+                { "read": "1", "write": "1", "next": "sRej", "move": "N" },
+                { "read": "#", "write": "#", "next": "s3", "move": "L" },
+                { "read": "_", "write": "_", "next": "sRej", "move": "N" }
+            ]
+        },
+        {
+            
+            "Description": "Looking for a 1 while going left",
+            "name": "s4",
+            "actions": [
+                { "read": "0", "write": "0", "next": "sRej", "move": "N" },
+                { "read": "1", "write": "#", "next": "s5", "move": "R" },
+                { "read": "#", "write": "#", "next": "s4", "move": "L" },
+                { "read": "_", "write": "_", "next": "sRej", "move": "N" }
+            ]
+        },
+        {
+            "Description": "Traveling right for the next symbol",
+            "name": "s5",
+            "actions": [
+                { "read": "0", "write": "#", "next": "s3", "move": "L" },
+                { "read": "1", "write": "#", "next": "s4", "move": "L" },
+                { "read": "#", "write": "#", "next": "s5", "move": "R" },
+                { "read": "_", "write": "_", "next": "sAcc", "move": "R" }
+            ]
+        },
+        {
+            "Description": "Finished Success",
+            "name": "sAcc",
+            "actions": []
+        },
+        {
+            "Description": "Finished Fail",
+            "name": "sRej",
+            "actions": []
+        }         
+    ]
+}
